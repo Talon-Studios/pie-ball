@@ -1,0 +1,19 @@
+{
+  "name": "pie-ball",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": [
+    "pie",
+    "sports",
+    "phaser-3"
+  ],
+  "author": "Talon Studios",
+  "license": "MIT",
+  "devDependencies": {
+    "express": "^4.18.1"
+  }
+}
