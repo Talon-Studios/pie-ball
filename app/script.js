@@ -4,9 +4,9 @@ script.js
 The main script for Pie-Ball.
 *^*^*^*^*^*^*^*/
 
-class Game extends Phaser.Scene {
+class GameScene extends Phaser.Scene {
   constructor() {
-    super();
+    super("game-scene");
   }
   preload() {
     this.engine = new Engine(this);
