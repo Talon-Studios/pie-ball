@@ -14,12 +14,6 @@ let game = {
 class GameScene extends Phaser.Scene {
   constructor() {
     super("game-scene");
-    this.enemyCount = {
-      normal: 1,
-      fast: 1,
-      cheater: 1,
-      multi: 1
-    };
   }
   preload() {
     this.engine = new Engine(this);
@@ -42,7 +36,7 @@ class GameScene extends Phaser.Scene {
     game.playerFrozen = false;
 
     // Create arrow
-    game.arrow = this.physics.add.staticSprite(game.player.x - 10, game.player.y - 20, "arrow").setScale(8);
+    game.aimerArrow = this.add.image(game.player.x - 10, game.player.y - 20, "arrow").setScale(8);
 
     // Shooting
     this.input.on("pointerup", () => {
@@ -61,11 +55,11 @@ class GameScene extends Phaser.Scene {
     if (!game.playerFrozen) {
       if (this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A).isDown) {
         game.player.setVelocityX(-300);
-        game.arrowDir = -2;
+        game.pieDir = -2;
       }
       if (this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D).isDown) {
         game.player.setVelocityX(300);
-        game.arrowDir = 2;
+        game.pieDir = 2;
       }
       if (this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S).isDown) {
         game.player.setVelocityY(300);
@@ -80,9 +74,9 @@ class GameScene extends Phaser.Scene {
     if (game.reload < 544) {
       game.reload += 5;
     }
-    game.pieAngle += game.arrowDir;
-    game.arrow.x = game.player.x - 10;
-    game.arrow.y = game.player.y - 20;
-    game.arrow.angle = game.pieAngle + 140;
+    game.pieAngle += game.pieDir;
+    game.aimerArrow.x = game.player.x - 10;
+    game.aimerArrow.y = game.player.y - 20;
+    game.aimerArrow.angle = game.pieAngle + 140;
   }
 }
