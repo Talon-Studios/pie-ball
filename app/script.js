@@ -6,7 +6,8 @@ The main script for Pie-Ball.
 
 let game = {
   pieAngle: 0,
-  pieDir: -2,
+  pieSpeed: 1,
+  pieDir: -1,
   holdDur: 0,
   playerFrozen: false,
   reload: 0
@@ -55,11 +56,11 @@ class GameScene extends Phaser.Scene {
     if (!game.playerFrozen) {
       if (this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A).isDown) {
         game.player.setVelocityX(-300);
-        game.pieDir = -2;
+        game.pieDir = -1;
       }
       if (this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D).isDown) {
         game.player.setVelocityX(300);
-        game.pieDir = 2;
+        game.pieDir = 1;
       }
       if (this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S).isDown) {
         game.player.setVelocityY(300);
@@ -74,7 +75,7 @@ class GameScene extends Phaser.Scene {
     if (game.reload < 544) {
       game.reload += 5;
     }
-    game.pieAngle += game.pieDir;
+    game.pieAngle += game.pieDir * game.pieSpeed;
     game.aimerArrow.x = game.player.x - 10;
     game.aimerArrow.y = game.player.y - 20;
     game.aimerArrow.angle = game.pieAngle + 140;
