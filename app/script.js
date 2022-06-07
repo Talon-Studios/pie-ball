@@ -39,7 +39,7 @@ class GameScene extends Phaser.Scene {
     // Groups
     game.pies = this.physics.add.group();
 
-    // Player
+    // Player: Place at 1/4 of the screen
     game.player = this.physics.add.sprite(this.engine.gameWidthCenter, 3 * (this.engine.gameHeight / 4), "player");
     game.player.setScale(8);
     game.player.setDrag(500);
