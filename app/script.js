@@ -75,7 +75,8 @@ class GameScene extends Phaser.Scene {
     game.pieSelector.on("pointerdown", () => {
       game.selectedPie = "normal";
     });
-    game.pieReload = this.add.rectangle(SELECTORPADDING + (SELECTORSIZE - RELOADWIDTH - 0.5) / 2 + RELOADWIDTH / 2, SELECTORPADDING + RELOADPADDING + 5, RELOADWIDTH, 10, game.themeColors.secondary1).setDepth(3);
+    game.pieReload = this.add.rectangle(SELECTORPADDING + (SELECTORSIZE - RELOADWIDTH - 0.5) / 2, SELECTORPADDING + RELOADPADDING + 5, 0, 10, game.themeColors.secondary1).setDepth(3);
+    game.pieReload.maxWidth = RELOADWIDTH;
     game.pieReloadBar = this.add.graphics().setDepth(3);
     game.pieReloadBar.lineStyle(BORDER, game.themeColors.notblack);
     game.pieReloadBar.strokeRect(SELECTORPADDING + (SELECTORSIZE - RELOADWIDTH - 0.5) / 2, SELECTORPADDING + RELOADPADDING, RELOADWIDTH, 10);
@@ -92,6 +93,7 @@ class GameScene extends Phaser.Scene {
         this.physics.velocityFromAngle(game.player.pieAngle, game.player.holdDur * 1.5, pie.body.velocity);
         game.player.holdDur = 0;
         game.player.reload = 0;
+        game.pieReload.width = 0;
       }
     });
   }
@@ -120,6 +122,7 @@ class GameScene extends Phaser.Scene {
     }
     if (game.player.reload < 544) {
       game.player.reload += 5;
+      game.pieReload.width += 0.6;
     }
     game.player.pieAngle += game.player.pieDir * game.player.pieSpeed;
     game.aimerArrow.x = game.player.x - 10;
