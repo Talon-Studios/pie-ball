@@ -58,7 +58,8 @@ export class GameScene extends Phaser.Scene {
     // Energy bar
     this.player.energyBarGraphics = this.add.graphics().setDepth(2);
     this.player.energyBarGraphics.lineStyle(border, game.themeColors.notblack);
-    this.player.energyBarGraphics.strokeRect(this.player.x - barWidth / 2 - 10, this.player.y + 25, barWidth, 10);
+    this.player.energyBarGraphics.strokeRect(0, 0, barWidth, 10);
+    this.player.energyBar = this.add.rectangle();
   }
   createPie(type) {
     new Pie(this, "custard");
@@ -139,7 +140,7 @@ export class GameScene extends Phaser.Scene {
     this.aimerArrow.x = this.player.x - 10;
     this.aimerArrow.y = this.player.y - 20;
     this.aimerArrow.angle = this.player.pieAngle + 140;
-    this.player.energyBarGraphics.x = this.player.x - 640;
-    this.player.energyBarGraphics.y = this.player.y - 450;
+    this.player.energyBarGraphics.x = this.player.x - 43;
+    this.player.energyBarGraphics.y = this.player.y + 30;
   }
 }
