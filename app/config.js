@@ -4,6 +4,8 @@ config.js
 The configuration for the Phaser 3 framework.
 *^*^*^*^*^*^*^*/
 
+import {GameScene} from "./script.js";
+
 const config = {
   type: Phaser.AUTO,
   scale: {
