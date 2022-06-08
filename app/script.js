@@ -15,7 +15,20 @@ let game = {
   }
 }
 
-// Main game
+class Pie {
+  constructor(_this, type) {
+    let pie = game.pies.create(game.player.x, game.player.y, "pie");
+    pie.setScale(8);
+    pie.setSize(6, 4);
+    pie.setOffset(0, 0);
+    pie.setGravityY(-1500);
+    pie.setDepth(1);
+    pie.type = type;
+    _this.physics.velocityFromAngle(game.player.pieAngle, game.player.holdDur * 1.5, pie.body.velocity);
+  }
+}
+
+// Main phaser game scene
 class GameScene extends Phaser.Scene {
   constructor() { super("game-scene"); }
   isKeyDown(key) { return this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes[key]).isDown; }
@@ -45,7 +58,7 @@ class GameScene extends Phaser.Scene {
     game.pieSelectorGraphics.lineStyle(border, game.themeColors.notblack);
     game.pieSelectorGraphics.strokeRect(selectorPadding, selectorPadding, selectorSize, selectorSize);
     game.pieSelectorImage = this.add.image(selectorPadding + 32 + 16, selectorPadding + 64, "pie").setScale(8).setDepth(3);
-    game.pieSelector.on("pointerdown", () => { game.selectedPie = "normal"; });
+    game.pieSelector.on("pointerdown", () => { game.selectedPie = "custard"; });
     game.pieReload = this.add.rectangle(selectorPadding + (selectorSize - barWidth - 0.5) / 2, selectorPadding + reloadPadding + 5, 0, 10, game.themeColors.secondary1).setDepth(3);
     game.pieReload.maxWidth = barWidth;
     game.pieReloadBar = this.add.graphics().setDepth(3);
@@ -59,14 +72,7 @@ class GameScene extends Phaser.Scene {
     game.player.energyBarGraphics.strokeRect(game.player.x - barWidth / 2 - 10, game.player.y + 25, barWidth, 10);
   }
   createPie(type) {
-    let pie = game.pies.create(game.player.x, game.player.y, "pie");
-    pie.setScale(8);
-    pie.setSize(6, 4);
-    pie.setOffset(0, 0);
-    pie.setGravityY(-1500);
-    pie.setDepth(1);
-    pie.type = type;
-    this.physics.velocityFromAngle(game.player.pieAngle, game.player.holdDur * 1.5, pie.body.velocity);
+    new Pie(this, "custard");
     game.player.holdDur = 0;
     game.player.reload = 0;
     game.pieReload.width = 0;
