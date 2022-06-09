@@ -5,6 +5,7 @@ The main script for Pie-Ball.
 *^*^*^*^*^*^*^*/
 
 import {Pie} from "./Pie.js";
+import {Opponent} from "./Opponent.js";
 
 // Game object for everything
 let game = {
@@ -53,6 +54,9 @@ export class GameScene extends Phaser.Scene {
     this.pieReloadBar.lineStyle(border, game.themeColors.notblack);
     // this.pieReloadBar.strokeRect(selectorPadding + (selectorSize - barWidth - 0.5) / 2, selectorPadding + reloadPadding, barWidth, 10);
   }
+  createOpponent(x, y, type) {
+    new Opponent(this, x, y, type);
+  }
   createEnergyBar(border, barWidth) {
     // Energy bar
     this.player.energyBarGraphics = this.add.graphics().setDepth(2);
@@ -76,6 +80,7 @@ export class GameScene extends Phaser.Scene {
     this.load.image("pie", "assets/pie.png");
     this.load.image("player", "assets/player.png");
     this.load.image("arrow", "assets/arrow.png");
+    this.load.image("opponent", "assets/opponent.png");
   }
   create() {
     this.engine.pixelCursor();
@@ -101,8 +106,16 @@ export class GameScene extends Phaser.Scene {
     // Create arrow
     this.aimerArrow = this.add.image(this.player.x - 10, this.player.y - 20, "arrow").setScale(8);
 
+    // Create opponents
+    this.createOpponent(this.engine.gameWidthCenter, this.engine.gameHeight / 4);
+
     // Throwing pies
     this.input.on("pointerup", () => { if (this.player.reload >= this.player.maxReload) this.createPie(); });
+
+    // Colliders
+    this.physics.add.collider(this.player, this.pies);
+    this.physics.add.collider(this.player, this.pies);
+    this.physics.add.collider(this.pies, this.opponents);
   }
   update() {
     this.engine.updatePixelCursor();
