@@ -89,6 +89,7 @@ export class GameScene extends Phaser.Scene {
 
     // Groups
     this.pies = this.physics.add.group();
+    this.opponents = this.physics.add.group();
 
     // Create player
     this.createPlayer();

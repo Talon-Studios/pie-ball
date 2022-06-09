@@ -1,7 +1,12 @@
-/**
- * Crates a pie and hurles it.
- * @param {string} type - The type of pie it is. It could be custard.
- */
+// Pie-Ball
+/*^*^*^*^*^*^*^*
+Pie.js
+Pie class that creates an pie and flings it.
+
+Types of Pies:
+CUSTARD
+
+*^*^*^*^*^*^*^*/
 
 export class Pie {
  constructor(_this, type) {
