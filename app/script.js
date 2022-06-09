@@ -19,7 +19,6 @@ let game = {
 // Main phaser game scene
 export class GameScene extends Phaser.Scene {
   constructor() { super("game-scene"); }
-  isKeyDown(key) { return this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes[key]).isDown; }
   createPlayer() {
     // Player: Place at 1/4 of the screen
     this.player = this.physics.add.sprite(this.engine.gameWidthCenter, 3 * (this.engine.gameHeight / 4), "player");
@@ -110,18 +109,18 @@ export class GameScene extends Phaser.Scene {
 
     // Movement with WASD during game
     if (!this.player.frozen) {
-      if (this.isKeyDown("A")) {
+      if (this.engine.isKeyDown("A")) {
         this.player.setVelocityX(-300);
         this.player.pieDir = -1;
       }
-      if (this.isKeyDown("D")) {
+      if (this.engine.isKeyDown("D")) {
         this.player.setVelocityX(300);
         this.player.pieDir = 1;
       }
-      if (this.isKeyDown("S")) {
+      if (this.engine.isKeyDown("S")) {
         this.player.setVelocityY(300);
       }
-      if (this.isKeyDown("W")) {
+      if (this.engine.isKeyDown("W")) {
         this.player.setVelocityY(-300);
       }
     }
