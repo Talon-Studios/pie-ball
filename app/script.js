@@ -38,15 +38,16 @@ export class GameScene extends Phaser.Scene {
     this.player.maxReload = 600;
     this.player.selectedPie = "basic";
   }
-  createPieSelector(selectorSize, selectorPadding, border, barWidth, reloadPadding) {
+  createPieSelector(count, type, selectorSize, selectorPadding, border, barWidth, reloadPadding) {
+    let posAdd = (count * selectorSize + count * 20) - 100;
     this.pieSelectorGraphics = this.add.graphics().setDepth(3);
-    this.pieSelector = this.add.rectangle(selectorPadding * 3, selectorPadding * 3, selectorSize, selectorSize);
+    this.pieSelector = this.add.rectangle(selectorPadding * 3, selectorPadding * 3 + posAdd, selectorSize, selectorSize);
     this.pieSelector.setInteractive();
     this.pieSelectorGraphics.lineStyle(border, game.themeColors.notblack);
-    this.pieSelectorGraphics.strokeRect(selectorPadding, selectorPadding, selectorSize, selectorSize);
-    this.pieSelectorImage = this.add.image(selectorPadding + 32 + 16, selectorPadding + 64, "pie").setScale(8).setDepth(3);
+    this.pieSelectorGraphics.strokeRect(selectorPadding, selectorPadding + posAdd, selectorSize, selectorSize);
+    this.pieSelectorImage = this.add.image(selectorPadding + 32 + 16, selectorPadding + 64 + posAdd, "pie").setScale(8).setDepth(3);
     this.pieSelector.on("pointerdown", () => { this.selectedPie = "custard"; });
-    this.pieReload = this.add.rectangle(selectorPadding + (selectorSize - barWidth - 0.5) / 2, selectorPadding + reloadPadding + 5, 0, 10, game.themeColors.secondary1).setDepth(3);
+    this.pieReload = this.add.rectangle(selectorPadding + (selectorSize - barWidth - 0.5) / 2, selectorPadding + reloadPadding + 5 + posAdd, 0, 10, game.themeColors.secondary1).setDepth(3);
     this.pieReload.maxWidth = barWidth;
     this.pieReloadBar = this.add.graphics().setDepth(3);
     this.pieReloadBar.lineStyle(border, game.themeColors.notblack);
@@ -93,16 +94,14 @@ export class GameScene extends Phaser.Scene {
     this.createPlayer();
 
     // Create UI
-    this.createPieSelector(SELECTORSIZE, SELECTORPADDING, BORDER, BARWIDTH, RELOADPADDING);
+    this.createPieSelector(1, "custard", SELECTORSIZE, SELECTORPADDING, BORDER, BARWIDTH, RELOADPADDING);
     this.createEnergyBar(BORDER, BARWIDTH);
 
     // Create arrow
     this.aimerArrow = this.add.image(this.player.x - 10, this.player.y - 20, "arrow").setScale(8);
 
     // Throwing pies
-    this.input.on("pointerup", () => {
-      if (this.player.reload >= this.player.maxReload) { this.createPie(); }
-    });
+    this.input.on("pointerup", () => { if (this.player.reload >= this.player.maxReload) this.createPie(); });
   }
   update() {
     this.engine.updatePixelCursor();
