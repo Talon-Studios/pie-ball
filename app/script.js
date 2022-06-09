@@ -16,7 +16,6 @@ let game = {
     notblack: 0x350941
   }
 }
-
 // Main phaser game scene
 export class GameScene extends Phaser.Scene {
   constructor() { super("game-scene"); }
@@ -52,18 +51,19 @@ export class GameScene extends Phaser.Scene {
     this.pieReload.maxWidth = barWidth;
     this.pieReloadBar = this.add.graphics().setDepth(3);
     this.pieReloadBar.lineStyle(border, game.themeColors.notblack);
-    this.pieReloadBar.strokeRect(selectorPadding + (selectorSize - barWidth - 0.5) / 2, selectorPadding + reloadPadding, barWidth, 10);
+    // this.pieReloadBar.strokeRect(selectorPadding + (selectorSize - barWidth - 0.5) / 2, selectorPadding + reloadPadding, barWidth, 10);
   }
   createEnergyBar(border, barWidth) {
     // Energy bar
     this.player.energyBarGraphics = this.add.graphics().setDepth(2);
     this.player.energyBarGraphics.lineStyle(border, game.themeColors.notblack);
     this.player.energyBarGraphics.strokeRect(0, 0, barWidth, 10);
-    this.player.energyBar = this.add.rectangle();
+    this.player.energyBar = this.add.rectangle(0, 0, 0, 10, game.themeColors.secondary2);
   }
   createPie(type) {
     new Pie(this, "custard");
     this.player.holdDur = 0;
+    this.player.energyBar.width = 0;
     this.player.reload = 0;
     this.pieReload.width = 0;
   }
@@ -126,8 +126,11 @@ export class GameScene extends Phaser.Scene {
       }
     }
 
-    // Gain energy when holding mouse and reload is maxed out
-    if (this.engine.mouseDown && this.player.holdDur < 500 && this.player.reload >= this.player.maxReload) { this.player.holdDur += 5; }
+    // Gain energy when holding mouse and reload is maxed out | Also extend the energy bar
+    if (this.engine.mouseDown && this.player.holdDur < 500 && this.player.reload >= this.player.maxReload) {
+      this.player.holdDur += 5;
+      this.player.energyBar.width += 320 / 500;
+    }
 
     // Extend the reload bar
     if (this.player.reload < this.player.maxReload) {
@@ -142,5 +145,7 @@ export class GameScene extends Phaser.Scene {
     this.aimerArrow.angle = this.player.pieAngle + 140;
     this.player.energyBarGraphics.x = this.player.x - 43;
     this.player.energyBarGraphics.y = this.player.y + 30;
+    this.player.energyBar.x = this.player.x - 43;
+    this.player.energyBar.y = this.player.y + 35;
   }
 }
