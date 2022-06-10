@@ -158,7 +158,7 @@ export class GameScene extends Phaser.Scene {
     this.player.pieAngle += this.player.pieDir * this.player.pieSpeed;
     this.aimerArrow.x = this.player.x - 10;
     this.aimerArrow.y = this.player.y - 20;
-    this.aimerArrow.angle = this.player.pieAngle + 140;
+    this.aimerArrow.angle = this.player.pieAngle + 280;
     this.player.energyBarGraphics.x = this.player.x - 43;
     this.player.energyBarGraphics.y = this.player.y + 30;
     this.player.energyBar.x = this.player.x - 43;
