@@ -20,6 +20,7 @@ let game = {
 // Main phaser game scene
 export class GameScene extends Phaser.Scene {
   constructor() { super("game-scene"); }
+  spritesInGroup(group, callback) { group.getChildren().forEach(callback); }
   createPlayer() {
     // Player: Place at 1/4 of the screen
     this.player = this.physics.add.sprite(this.engine.gameWidthCenter, 3 * (this.engine.gameHeight / 4), "player");
@@ -55,7 +56,7 @@ export class GameScene extends Phaser.Scene {
     // this.pieReloadBar.strokeRect(selectorPadding + (selectorSize - barWidth - 0.5) / 2, selectorPadding + reloadPadding, barWidth, 10);
   }
   createOpponent(x, y, type, health) {
-    new Opponent(this, x, y, type, health);
+    new Opponent(this, game, x, y, type, health);
   }
   createEnergyBar(border, barWidth) {
     // Energy bar
@@ -115,7 +116,7 @@ export class GameScene extends Phaser.Scene {
     // Colliders
     this.physics.add.collider(this.player, this.pies);
     this.physics.add.collider(this.player, this.pies);
-    this.physics.add.collider(this.pies, this.opponents, (pie, opponent) => {
+    this.physics.add.overlap(this.pies, this.opponents, (pie, opponent) => {
       pie.destroy();
       opponent.opponentObj.updateHealth(-10);
     });
@@ -162,5 +163,10 @@ export class GameScene extends Phaser.Scene {
     this.player.energyBarGraphics.y = this.player.y + 30;
     this.player.energyBar.x = this.player.x - 43;
     this.player.energyBar.y = this.player.y + 35;
+
+    // Update all opponents
+    this.spritesInGroup(this.opponents, (opponent) => {
+      opponent.opponentObj.updateHeatlhBarPos();
+    });
   }
 }
