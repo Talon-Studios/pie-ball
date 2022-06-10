@@ -5,6 +5,7 @@ The main script for Pie-Ball.
 *^*^*^*^*^*^*^*/
 
 import {Pie} from "./Pie.js";
+import {Opponent} from "./Opponent.js";
 
 // Game object for everything
 let game = {
@@ -19,6 +20,7 @@ let game = {
 // Main phaser game scene
 export class GameScene extends Phaser.Scene {
   constructor() { super("game-scene"); }
+  spritesInGroup(group, callback) { group.getChildren().forEach(callback); }
   createPlayer() {
     // Player: Place at 1/4 of the screen
     this.player = this.physics.add.sprite(this.engine.gameWidthCenter, 3 * (this.engine.gameHeight / 4), "player");
@@ -53,6 +55,9 @@ export class GameScene extends Phaser.Scene {
     this.pieReloadBar.lineStyle(border, game.themeColors.notblack);
     // this.pieReloadBar.strokeRect(selectorPadding + (selectorSize - barWidth - 0.5) / 2, selectorPadding + reloadPadding, barWidth, 10);
   }
+  createOpponent(x, y, type, health) {
+    new Opponent(this, game, x, y, type, health);
+  }
   createEnergyBar(border, barWidth) {
     // Energy bar
     this.player.energyBarGraphics = this.add.graphics().setDepth(2);
@@ -76,6 +81,7 @@ export class GameScene extends Phaser.Scene {
     this.load.image("pie", "assets/pie.png");
     this.load.image("player", "assets/player.png");
     this.load.image("arrow", "assets/arrow.png");
+    this.load.image("opponent", "assets/opponent.png");
   }
   create() {
     this.engine.pixelCursor();
@@ -89,6 +95,7 @@ export class GameScene extends Phaser.Scene {
 
     // Groups
     this.pies = this.physics.add.group();
+    this.opponents = this.physics.add.group();
 
     // Create player
     this.createPlayer();
@@ -100,8 +107,19 @@ export class GameScene extends Phaser.Scene {
     // Create arrow
     this.aimerArrow = this.add.image(this.player.x - 10, this.player.y - 20, "arrow").setScale(8);
 
+    // Create opponents
+    this.createOpponent(this.engine.gameWidthCenter, this.engine.gameHeight / 4, "basic", 100);
+
     // Throwing pies
     this.input.on("pointerup", () => { if (this.player.reload >= this.player.maxReload) this.createPie(); });
+
+    // Colliders
+    this.physics.add.collider(this.player, this.pies);
+    this.physics.add.collider(this.pies, this.pies);
+    this.physics.add.overlap(this.pies, this.opponents, (pie, opponent) => {
+      pie.destroy();
+      opponent.opponentObj.updateHealth(-10);
+    });
   }
   update() {
     this.engine.updatePixelCursor();
@@ -145,5 +163,10 @@ export class GameScene extends Phaser.Scene {
     this.player.energyBarGraphics.y = this.player.y + 30;
     this.player.energyBar.x = this.player.x - 43;
     this.player.energyBar.y = this.player.y + 35;
+
+    // Update all opponents
+    this.spritesInGroup(this.opponents, (opponent) => {
+      opponent.opponentObj.updateHeatlhBarPos();
+    });
   }
 }
