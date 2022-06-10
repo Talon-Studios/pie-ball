@@ -115,7 +115,7 @@ export class GameScene extends Phaser.Scene {
 
     // Colliders
     this.physics.add.collider(this.player, this.pies);
-    this.physics.add.collider(this.player, this.pies);
+    this.physics.add.collider(this.pies, this.pies);
     this.physics.add.overlap(this.pies, this.opponents, (pie, opponent) => {
       pie.destroy();
       opponent.opponentObj.updateHealth(-10);
