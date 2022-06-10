@@ -33,7 +33,7 @@ export class GameScene extends Phaser.Scene {
     this.player.setDepth(2);
     this.player.frozen = false;
     this.player.pieAngle = 0;
-    this.player.pieSpeed = 1.5;
+    this.player.pieSpeed = 2;
     this.player.pieDir = -1;
     this.player.holdDur = 0;
     this.player.reload = 0;
@@ -145,8 +145,8 @@ export class GameScene extends Phaser.Scene {
 
     // Gain energy when holding mouse and reload is maxed out | Also extend the energy bar
     if (this.engine.mouseDown && this.player.holdDur < 500 && this.player.reload >= this.player.maxReload) {
-      this.player.holdDur += 5;
-      this.player.energyBar.width += 320 / 500;
+      this.player.holdDur += 2;
+      this.player.energyBar.width += 128 / 500;
     }
 
     // Extend the reload bar
