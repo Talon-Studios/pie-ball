@@ -54,8 +54,8 @@ export class GameScene extends Phaser.Scene {
     this.pieReloadBar.lineStyle(border, game.themeColors.notblack);
     // this.pieReloadBar.strokeRect(selectorPadding + (selectorSize - barWidth - 0.5) / 2, selectorPadding + reloadPadding, barWidth, 10);
   }
-  createOpponent(x, y, type) {
-    new Opponent(this, x, y, type);
+  createOpponent(x, y, type, health) {
+    new Opponent(this, x, y, type, health);
   }
   createEnergyBar(border, barWidth) {
     // Energy bar
@@ -107,7 +107,7 @@ export class GameScene extends Phaser.Scene {
     this.aimerArrow = this.add.image(this.player.x - 10, this.player.y - 20, "arrow").setScale(8);
 
     // Create opponents
-    this.createOpponent(this.engine.gameWidthCenter, this.engine.gameHeight / 4);
+    this.createOpponent(this.engine.gameWidthCenter, this.engine.gameHeight / 4, "basic", 100);
 
     // Throwing pies
     this.input.on("pointerup", () => { if (this.player.reload >= this.player.maxReload) this.createPie(); });
@@ -115,7 +115,10 @@ export class GameScene extends Phaser.Scene {
     // Colliders
     this.physics.add.collider(this.player, this.pies);
     this.physics.add.collider(this.player, this.pies);
-    this.physics.add.collider(this.pies, this.opponents);
+    this.physics.add.collider(this.pies, this.opponents, (pie, opponent) => {
+      pie.destroy();
+      opponent.opponentObj.updateHealth(-10);
+    });
   }
   update() {
     this.engine.updatePixelCursor();
